@@ -23,17 +23,10 @@ public class Calculator{
         Stack<Character> operators = new Stack<>();
         Stack<Integer> operands = new Stack<>();
         int i = 0;
-        String num="";
-        while (i<exp.length()){   
+        while (i<exp.length()){
             char c = exp.charAt(i);
             if(isOperand(c)){
-                while (isOperand(c) && i<exp.length()-1) {
-                    num+=Character.toString(c);
-                    i++;
-                    c=exp.charAt(i);
-                }
-                operands.push(Integer.parseInt(num));
-                num="";
+                operands.push(Integer.parseInt(c+""));
             }else if(c=='('){
                 operators.push(c);
             }else if(c==')'){
@@ -94,7 +87,7 @@ public class Calculator{
     }
 
     public static boolean isOperand(char op){
-        return Character.isDigit(op);
+        return Character.isAlphabetic(op) || Character.isDigit(op);
     }
 
     public static int operate(int a, int b, char op){

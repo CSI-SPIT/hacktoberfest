@@ -44,13 +44,9 @@ int main(){
         if(str[i]==' '){
             printf("%s\n",characters[0]);
         }
-        else if(str[i]>='a' && str[i]<='z'){ 
+        else if(str[i]>='a' && str[i]<='z'){
             printf("%s\n",characters[str[i]-'a'+1]);
-        }
-        else if(str[i]>='A' && str[i]<='Z'){ 
-            printf("%s\n",characters[str[i]-'A'+1]);
-        }
-        else{
+        }else{
             printf("Invalid character %c in string.",str[i]);
             break;
         }
