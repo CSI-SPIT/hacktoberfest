@@ -14,7 +14,7 @@ print("Loading data...")
 
 # The file contains data in the following format:
 # PlayerID,Name,Team,BasePrice
-file = open('data/auction_players.csv','w')
+file = open('data/auction_players.csv','r')
 lines = file.readlines()
 
 playerList = []
