@@ -4,6 +4,7 @@
 */
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class BankSystem {
@@ -94,20 +95,24 @@ class Account{
         return account;
     }
 
-    public static Account login(String username, String password){
-        username = username.toLowerCase();
+    public static Account login(String username1, String password1) {
+        username1 = username1.toLowerCase();
         for (int i = 0; i < accounts.size(); i++) {
-            if(accounts.get(i).username==username){
-                if(accounts.get(i).password==password){
-                    return accounts.get(i);
-                }
+            if (accounts.get(i).username.equals(username1) && accounts.get(i).password.equals(password1)) {
+
+                return accounts.get(i);
+            } else if (!(accounts.get(i).password.equals(password1))) {
                 System.out.println("Wrong password.");
                 return null;
+            } else {
+                System.out.println("Could not find that user.");
+                return null;
             }
-        }
-        System.out.println("Could not find that user.");
-        return null;
+        }return null;
+
     }
+
+
 
     public void withdraw(int amount){
         balance -= amount;
@@ -121,3 +126,4 @@ class Account{
         return balance;
     }
 }
+
