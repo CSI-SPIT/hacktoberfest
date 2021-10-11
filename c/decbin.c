@@ -15,7 +15,7 @@ int main(void){
         printf("Enter your number in decimal: \n");
         scanf("%d",&dec);
         long bin = 0;
-        long factor = 1;
+        long factor = 0;
         while(dec!=0){
             bin+=factor*(dec%2);
             factor*=10;
