@@ -97,8 +97,8 @@ class Account{
     public static Account login(String username, String password){
         username = username.toLowerCase();
         for (int i = 0; i < accounts.size(); i++) {
-            if(accounts.get(i).username==username){
-                if(accounts.get(i).password==password){
+            if(accounts.get(i).username.compareTo(username)==0){
+                if(accounts.get(i).password.compareTo(password)==0){
                     return accounts.get(i);
                 }
                 System.out.println("Wrong password.");
