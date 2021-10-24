@@ -45,8 +45,10 @@ public class BankSystem {
                     }
                     System.out.print("Amount> ");
                     amount = scanner.nextInt();
-                    acc.withdraw(amount);
-                    System.out.println("Withdrew "+amount+" rupees.");
+                    boolean check = acc.withdraw(amount);
+                    if(check){
+                        System.out.println("Withdrew "+amount+" rupees.");                        
+                    }
                     break;
                 case 3:
                     System.out.print("Username> ");
@@ -114,8 +116,16 @@ class Account{
 
 
 
-    public void withdraw(int amount){
+    public boolean withdraw(int amount){
+        if(balance<amount){
+            System.out.println("Invalid Amount Error!");
+            System.out.println("Your Entered amount is less than available balance");
+            System.out.println("Your current balance is "+balance);
+            System.out.println("Please try again..");
+            return false;
+        }
         balance -= amount;
+        return true;
     }
 
     public void deposit(int amount){
@@ -126,4 +136,3 @@ class Account{
         return balance;
     }
 }
-
