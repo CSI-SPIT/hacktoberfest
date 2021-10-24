@@ -2,12 +2,13 @@
  *   A calculator to solve simple arithmetic expressions.
  *   Currently, it only works with simple digit numbers.
  *   We will expand its features and capabilities later.
- *   added % and correct whitespace issue
- *   Added try catch
+ *   Added power(^) operation
+ *   Used pow function from Math library
  */
 
 import java.util.*;
 import java.lang.Exception;
+import java.lang.Math;
 
 public class Calculator{
     static int flag = 0;
@@ -125,6 +126,7 @@ public class Calculator{
             case '(':
             case ')':
             case '%':
+            case '^':
                 return true;
         }
         return false;
@@ -153,6 +155,9 @@ public class Calculator{
                     else return a/b;
                 case '%':
                     return a%b;
+
+                case '^':
+                    return (int)Math.pow((double)a,(double)b);
             }
             return 0;
         }
