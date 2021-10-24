@@ -1,76 +1,119 @@
 /*
-*   A calculator to solve simple arithmetic expressions.
-*   Currently, it only works with simple digit numbers.
-*   We will expand its features and capabilities later.
-*/
+ *   A calculator to solve simple arithmetic expressions.
+ *   Currently, it only works with simple digit numbers.
+ *   We will expand its features and capabilities later.
+ *   added % and correct whitespace issue
+ *   Added try catch
+ */
 
-import java.util.Scanner;
-import java.util.Stack;
+import java.util.*;
+import java.lang.Exception;
 
 public class Calculator{
-    public static void main(String[] args){
+    static int flag = 0;
+    public static void main(String[] args) throws Exception{
         Scanner scanner = new Scanner(System.in);
+        boolean exit= false;
+        int choice;
 
-        while (true){
-            System.out.println("Enter an expression to solve:");
-            String input = scanner.nextLine();
-            if(input.length()==0) break;
-            System.out.println("ANS: "+evaluate(input)+"\n");
+        while (!exit){
+            System.out.println("1. Expression to solve:");
+            System.out.println("2. Exit: ");
+            System.out.print("Your choice: ");
+            choice= scanner.nextInt();
+            scanner.nextLine();  // flushing scanner
+
+            if(choice==1){
+                System.out.println("Enter Expression:");
+                flag =0;
+                String input = scanner.nextLine();
+                String temp = input.replaceAll(" ", ""); //removing spaces
+
+                if(input.length()==0) break;
+                int ANS= evaluate(temp);
+                if(flag== 1){
+                    System.out.println("Enter valid input");
+                }
+                else{
+                    System.out.println("ANS: "+ ANS+"\n");
+                }
+            }
+            else if(choice==2){
+                System.out.println("Thanks and keep contributing");
+                exit = true;
+                break;
+            }
+            else
+                System.out.println("Enter correct choice");
         }
+        /*
+            catch (InputMismatchException e){
+            System.out.println("Enter right choice");
+        }
+        */
     }
 
-    public static int evaluate(String exp){
+    public static int evaluate(String exp) throws Exception{
         Stack<Character> operators = new Stack<>();
         Stack<Integer> operands = new Stack<>();
-        int i = 0;
-        while (i<exp.length()){
+
+        for(int i=0;i<exp.length();i++){
             char c = exp.charAt(i);
+
             if(isOperand(c)){
-                operands.push(Integer.parseInt(c+""));
-            }else if(c=='('){
+                StringBuilder opr = new StringBuilder();
+                while(i<exp.length() && isOperand(exp.charAt(i))){
+                    opr.append(exp.charAt(i++)); //keeps pointing to next
+                }
+                operands.push(Integer.parseInt(opr.toString()));
+                i--;
+
+            }
+
+            else if(c=='('){
                 operators.push(c);
-            }else if(c==')'){
+
+            }
+            else if(c==')'){
                 while(operators.peek()!='('){
                     int b = operands.pop();
                     int a = operands.pop();
                     char op = operators.pop();
-                    operands.push(operate(a,b,op));
+                    operands.push(operate(b,a,op));
                 }
-                operators.pop();
-            }else if(isOperator(c)){
+                operators.pop(); //popped ')'
+            }
+            else if(isOperator(c)){
                 while(!operators.empty() && opPrec(operators.peek())>=opPrec(c)){
                     int b = operands.pop();
                     int a = operands.pop();
                     char op = operators.pop();
-                    operands.push(operate(a,b,op));
+                    operands.push(operate(a, b, op));
                 }
                 operators.push(c);
             }
-            i++;
+
         }
         while(!operators.empty()){
             int b = operands.pop();
             int a = operands.pop();
             char op = operators.pop();
-            operands.push(operate(a,b,op));
+            operands.push(operate(a, b, op));
         }
-        return operands.peek();
+        return operands.pop();
     }
 
     public static int opPrec(char op){
-        switch (op){
-            case '+':
-            case '-':
-                return 1;
-            case '*':
-                return 2;
-            case '/':
-                return 2;
-            case '(':
-            case ')':
-                return -2;
+        if (op == '+' || op == '-') {
+            return 1;
         }
-        return -1;
+        if (op == '*' || op == '/' || op == '%') {
+            return 2;
+        }
+        if (op == '^' || op == '$') {
+            return 3;
+        }
+        return 0;
     }
 
     public static boolean isOperator(char op){
@@ -81,31 +124,42 @@ public class Calculator{
             case '/':
             case '(':
             case ')':
+            case '%':
                 return true;
         }
         return false;
     }
 
     public static boolean isOperand(char op){
-        return Character.isAlphabetic(op) || Character.isDigit(op);
+        return (op>='0'&& op<='9');
     }
 
-    public static int operate(int a, int b, char op){
-        int result = 0;
-        switch (op){
-            case '+':
-                result = a+b;
-                break;
-            case '-':
-                result = a-b;
-                break;
-            case '*':
-                result = a*b;
-                break;
-            case '/':
-                result = a/b;
-                break;
+    public static int operate(int a, int b, char op) throws Exception{
+        try{
+            switch (op){
+                case '+':
+                    return a+b;
+
+                case '-':
+                    return a-b;
+
+                case '*':
+                    return a*b;
+
+                case '/':
+                    if(b==0){
+                        throw new Exception();
+                    }
+                    else return a/b;
+                case '%':
+                    return a%b;
+            }
+            return 0;
         }
-        return result;
+        catch(Exception e){
+            System.out.println("Wrong input Cannot divide by 0");
+            flag = 1;
+            return 0; // OR Integer.MIN_VALUE;
+        }
     }
 }
