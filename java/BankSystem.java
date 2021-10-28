@@ -6,6 +6,7 @@
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
+import java.lang.Boolean;
 
 public class BankSystem {
     public static void main(String[] args) {
@@ -45,7 +46,7 @@ public class BankSystem {
                     }
                     System.out.print("Amount> ");
                     amount = scanner.nextInt();
-                    acc.withdraw(amount);
+                    if(acc.withdraw(amount)==true)
                     System.out.println("Withdrew "+amount+" rupees.");
                     break;
                 case 3:
@@ -114,8 +115,17 @@ class Account{
 
 
 
-    public void withdraw(int amount){
-        balance -= amount;
+    public Boolean withdraw(int amount){
+        if(balance<amount)
+        {
+         System.out.println("Operation Failed due to insufficient account balance");
+         return false;
+        }
+        else
+        {
+         balance -= amount;
+        }
+            return true;
     }
 
     public void deposit(int amount){
