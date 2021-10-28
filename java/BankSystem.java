@@ -4,7 +4,9 @@
 */
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
+import java.lang.Boolean;
 
 public class BankSystem {
     public static void main(String[] args) {
@@ -44,7 +46,7 @@ public class BankSystem {
                     }
                     System.out.print("Amount> ");
                     amount = scanner.nextInt();
-                    acc.withdraw(amount);
+                    if(acc.withdraw(amount)==true)
                     System.out.println("Withdrew "+amount+" rupees.");
                     break;
                 case 3:
@@ -94,23 +96,36 @@ class Account{
         return account;
     }
 
-    public static Account login(String username, String password){
-        username = username.toLowerCase();
+    public static Account login(String username1, String password1) {
+        username1 = username1.toLowerCase();
         for (int i = 0; i < accounts.size(); i++) {
-            if(accounts.get(i).username==username){
-                if(accounts.get(i).password==password){
-                    return accounts.get(i);
-                }
+            if (accounts.get(i).username.equals(username1) && accounts.get(i).password.equals(password1)) {
+
+                return accounts.get(i);
+            } else if (!(accounts.get(i).password.equals(password1))) {
                 System.out.println("Wrong password.");
                 return null;
+            } else {
+                System.out.println("Could not find that user.");
+                return null;
             }
-        }
-        System.out.println("Could not find that user.");
-        return null;
+        }return null;
+
     }
 
-    public void withdraw(int amount){
-        balance -= amount;
+
+
+    public Boolean withdraw(int amount){
+        if(balance<amount)
+        {
+         System.out.println("Operation Failed due to insufficient account balance");
+         return false;
+        }
+        else
+        {
+         balance -= amount;
+        }
+            return true;
     }
 
     public void deposit(int amount){
@@ -121,3 +136,4 @@ class Account{
         return balance;
     }
 }
+
